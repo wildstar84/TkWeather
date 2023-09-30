@@ -1,0 +1,54 @@
+v1.05:	Eliminated "Geo::Weather" module requirement - www.w3.weather.com 
+changed their HTML *AGAIN* and Geo::Weather is apparently keeping up, so I 
+now scrape their page myself.
+Added "browser" and "weatherurl" options, see manpage.
+
+v1.06: Not released.
+
+v1.07: Added ability to fetch weather from wunderground.
+v1.09: Fixed install issues
+v1.31: Added www.noaa.gov as a 3rd datasource choice.  Added metric option.
+       Added warning / alert color to background.
+v1.33: Fix for slight changes in Wunderground site (icon, wind, and visibility).
+v1.34: -not released-
+v1.35: Fix for slight changes in Wunderground & NOAA sites.
+v1.37: Fix to accomodate alternate url in NOAA for the icon image.
+v1.8:  Add fourth weather site option (Weatherbug).
+v1.83: Create Windows version, Windows self-extracting setup and unify 
+       with Linux version.
+v1.84: Minor font change, fix Windows installer bug.
+v1.87: Minor changes to accomodate weather site changes.
+v2.1:  Added geolocation option for automatically fetching the weather for 
+       for the zip-code in/near your ISP.
+v2.21: Fixed weathersite changes
+v2.22: Fixed wunderground icon url chg.
+v2.32: Fix for massive changes to weatherbug's site - also added check so that 
+       if lwp.simple.get fails to fetch site, we now try wget.  This needed for 
+       weatherbug's "mobile" (alternate) site.  Also made slight tweaks to the 
+       "misery index" calculation to factor both rel. humidity & dewpoint.
+v2.33: Workaround for foobarred lwp-request (on my box) that now refuses to 
+	  download images anymore by failing over to "wget".  Also tweaks for 
+	  weather.com site changes. 
+v2.60: Removed weatherbug from the choices of sites - they've become too spammed 
+       up and it is no longer possible to scrape off the needed information.
+v2.61: Removed weather.com from choices - too javascripted up, data no longer scrapeable - grrrrrr!
+v2.71: Maintenance release to fix up changes in the sites.
+       Added a "hot warning color" (hwarningcolor).
+       Fixed issue w/geolocatezip.pl due to changes in the USPS website.
+v2.72: Fix out-of-bounds weather-site array index.
+v2.73: Reset image to default "smiling sun" image if TkWeather becomes unable 
+       to pull (update) from any site.  Also, don't recalculate warning 
+       background colors if no valid data was pulled.
+v2.8:  Redesign regices for Wunderground site (they changed it up a bunch).
+       Update license & copyright notice.
+------- LONG DORMANT PERIOD -------
+v3.4:  * NOAA is now the only weather site supported, as during the intrim, 
+       Weather.com, Wunderground and Weatherbug (all commercial sites) have 
+       all completely ofuscated their sites to where it's no longer possible to 
+       scrape both an icon and the pertinent weather info text.
+       * Numerous other updates, fixes & tweaks made internally.
+       * "Misery Index" uses an improved formula & is scaled to 100 instead of 
+       150 to feel more like a real temperature.
+       * geolocatezip.pl has not changed.
+       * Also included my tkweather.cfg (zip-code changed for privacy) for a 
+       working example.

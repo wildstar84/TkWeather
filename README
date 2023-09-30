@@ -1,0 +1,155 @@
+NAME
+            TkWeather, by (c) Jim Turner
+
+SYNOPSIS
+            tkweather.pl [-options=values] [zip-code|"lookup"]
+
+DESCRIPTION
+            This program fetches the current weather conditions every 12 
+            minutes (720 seconds) (configurable) from 
+            https://forecast.weather.gov and displays a nice square iconic button 
+            showing the current weather condition.  Clicking the button shows the 
+            current basic weather condition values, such as temperature, humidity, 
+            and wind.  Clicking again shows additional information, namely the 
+            barometric pressure, visiblility, and "heat index" or 
+            "wind chill" or "misery index".  
+            Holding the [Shift] key while 
+            clicking displays a webpage showing the detailed weather info. 
+            Double-clicking or holding the [Alt] key while clicking refreshes the 
+            data. 
+            Holding the [Shift] and [Ctrl] keys simultainously while clicking 
+            exits the program.
+        
+            For anyone not from Houston, Texas,
+            the old "misery index" is the temperature plus dewpoint.  Anything 
+            over 150 is considered "miserable"!  I use this for planning 
+            workouts.  The default is to use the more modern "heat index".  
+            Specify "index=misery" for the old Houston "misery index".  
+            "wind chill" is used if the temperature is below 70 and wind 
+            is >= 10mph regardless.  This has now been updated to a more 
+            temperature-friendly value (>=100 is "miserable") by multiplying 
+            the old value by 2/3 (0.6667).
+
+CONFIGURATION
+            How to set up:
+
+            1)  Create a "tkweather" directory in your home directory.
+
+            2)  You will also need to specify your zipcode either as the 
+            command-line argument or add a "zipcode=yourzip" line in 
+            $HOME/tkweather/tkweather.cfg
+            Otherwise you get the weather at the author's zipcode!
+            If you specify a string, such as "lookup" instead of a number, 
+            tkweather will attempt to look up your zip-code using geolocatezipp.pl.
+
+            3)  The optional file:  $HOME/tkweather/tkweather.cfg takes the
+            format (defaults shown below):  Any line starting with "#" is 
+            ignored as a comment (Default values are shown).
+
+            geometry=+100+100
+            zipcode=76087
+            #BROWSER TO BE INVOKED IF USER PRESSES SHIFT-CLICK ON BUTTON. 
+            browser=mozilla
+            #URL USED FOR SCRAPING WEATHER DATA.
+            weatherurl=https://forecast.weather.gov/zipcity.php?Go2=Go&inputstring=<ZIP>
+            #COMMAND URL TO BE INVOKED IF USER PRESSES SHIFT-CLICK ON BUTTON. 
+            weathercmd=https://forecast.weather.gov/zipcity.php?Go2=Go&inputstring=<ZIP> &
+            #MILLISECONDS TO WAIT BETWEEN QUERIES TO THE WEATHER URL.
+            checkmsec=720000
+            #BUTTON RELIEF (CHOICES:  flat, groove, raised, ridge, sunken)
+            relief=ridge
+            #INDEX:  "misery": USE OLD "MISERY INDEX" (HEAT+DEWPOINT),
+            #OTHERWISE ("heat") USE MODERN "HEAT INDEX" AS REPORTED.
+            #NOTE:  WIND CHILL IS REPORTED IF TEMP. < 70 AND WIND >= 10 MPH
+            #REGARDLESS OF THIS SETTING!
+            index=heat
+            #OVERRIDEDIRECT ARGUMENT 0=MANAGED BY WINDOWMANAGER (DECORATE)
+            #1=BYPASS WINDOWMANAGER (NO DECORATION).  USE 0 IF DOCKING IN
+            #WINDOWMAKER OR AFTERSTEP.
+            windowmgr=0
+            #STARTUP ICON IMAGE (MUST BE IN $ENV{HOME}/tkweather/)
+            startimage=tkweather.gif
+            #WARN ON WHICH TYPES:
+            warntypes=tornado|storm|blizard|freeze|flood
+            #NORMAL TEXT FOREGROUND COLOR
+            normalcolor=green
+            #COLOR OF 1 PIXEL FRAME AROUND BUTTON
+            framecolor=#222222
+            #WARNING COLOR
+            warningcolor=yellow
+            #ALERT COLOR
+            alertcolor=red
+            #COLD WARNING COLOR  (I USE cyan)  DEFAULT IS warningcolor IF NOT DEFINED.
+            cwarningcolor=<undef>
+            #COLD ALERT COLOR    (I USE blue)  DEFAULT IS warningcolor IF NOT DEFINED.
+            calertcolor=<undef>
+            #HOT WARNING COLOR  (I USE orange)  DEFAULT IS warningcolor IF NOT DEFINED.
+            hwarningcolor=<undef>
+            #NORMAL BACKGROUND COLOR
+            bgcolor=black
+            #CONVERT TEMPS, WIND-SPEED ETC. TO METRIC IF SET.
+            metric=0
+            #DO NOT DISPLAY MESSAGE TO STDERR WHEN FETCHING WEATHER FROM WEB (IF SET):
+            silent=0
+            #DO NOT DUMP DEBUG INFORMATION TO STDERR (UNLESS SET)
+            debug=0
+            #SHOW SITE NAME IN TEMPERATURE BALLOON (IF SET)
+            noshowsite=0
+            #SHOW ZIPCODE IN BALLOON (0=always show, 1=only if zip=lookup, 2=never show)
+            noshowzip=1
+            #FONT (USED FOR THE TEXT VALUES IN BUTTON (SHOULD BE A SMALL ONE!)
+            font=-*-lucida console-bold-r-*-*-9-*-*-*-*-*-*-*
+            #DO NOT SHOW CPU TEMP. IN BALLOON IF SET:
+            nocputemp=0
+
+            4)  Copy the image "tkweather.gif" to $HOME/tkweather/
+
+            5)  Copy tkweather.pl to somewhere in your PATH or wherever you 
+            want to be able to run it from.  Make sure line 1 points to your
+            perl interpreter.
+
+            6)  To make this app appear in your AfterStep/Windowmaker "wharf", 
+            add the following to your config file:
+            *Wharf TkWeather "-" MaxSwallow "TkWeather" /usr/bin/nice -n 15 /usr/local/bin/tkweather.pl &
+        
+            7)  Enjoy!
+
+LICENSE AND COPYRIGHT
+    Copyright (c) 2003-2023 Jim Turner.
+
+    This program is free software; you can redistribute it and/or modify it
+    under the terms of the the Artistic License (2.0). You may obtain a copy
+    of the full license at:
+
+    <http://www.perlfoundation.org/artistic_license_2_0>
+
+    Any use, modification, and distribution of the Standard or Modified
+    Versions is governed by this Artistic License. By using, modifying or
+    distributing the Package, you accept this license. Do not use, modify,
+    or distribute the Package, if you do not accept this license.
+
+    If your Modified Version has been derived from a Modified Version made
+    by someone other than you, you are nevertheless required to ensure that
+    your Modified Version complies with the requirements of this license.
+
+    This license does not grant you the right to use any trademark, service
+    mark, tradename, or logo of the Copyright Holder.
+
+    This license includes the non-exclusive, worldwide, free-of-charge
+    patent license to make, have made, use, offer to sell, sell, import and
+    otherwise transfer the Package with respect to any patent claims
+    licensable by the Copyright Holder that are necessarily infringed by the
+    Package. If you institute patent litigation (including a cross-claim or
+    counterclaim) against any party alleging that the Package constitutes
+    direct or contributory patent infringement, then this Artistic License
+    to you shall terminate on the date that such litigation is filed.
+
+    Disclaimer of Warranty: THE PACKAGE IS PROVIDED BY THE COPYRIGHT HOLDER
+    AND CONTRIBUTORS "AS IS' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES.
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE, OR NON-INFRINGEMENT ARE DISCLAIMED TO THE EXTENT PERMITTED BY
+    YOUR LOCAL LAW. UNLESS REQUIRED BY LAW, NO COPYRIGHT HOLDER OR
+    CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
+    CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
