@@ -196,7 +196,7 @@ use Tk::JPEG;
 use LWP::Simple;
 use  Tk::Balloon;
 
-our $VERSION = '3.40';
+our $VERSION = '3.41';
 
 my $havetime2str = 0;
 eval { require 'Date/Time2fmtstr.pm'; $havetime2str = 1; };
@@ -215,7 +215,7 @@ eval { require 'Date/Time2fmtstr.pm'; $havetime2str = 1; };
 	}
 
 	my $checkmsec = '720000';
-	my $checkmsec_onerror = '60000';
+	my $checkmsec_onerror = '180000';
 	my $relief = 'ridge';
 	my $windowmgr = 0;
 	my $startimage = 'tkweather.gif';
@@ -414,9 +414,9 @@ eval { require 'Date/Time2fmtstr.pm'; $havetime2str = 1; };
 
 sub refresh_data { #REFRESH DATA
 		--$btnState;  #UNDO THE BUTTON-STATE ADVANCE ON CLICK.
-		$btnState = 4  if ($btnState < 0);
+		$btnState = 3  if ($btnState < 0);
 		--$btnState;
-		$btnState = 4  if ($btnState < 0);
+		$btnState = 3  if ($btnState < 0);
 		&getweather();
 }
 
@@ -429,7 +429,7 @@ sub refresh_data { #REFRESH DATA
 sub Shift_1 {    #PULL UP SITE'S WEBPAGE:
 print STDERR "-1- BEF: btnState=$btnState=\n"  if ($debug);
 		--$btnState;
-		$btnState = 4  if ($btnState < 0);
+		$btnState = 3  if ($btnState < 0);
 #		&getweather();
 		$mw->update;
 		my $cmd = $weathercmd;
@@ -732,23 +732,15 @@ print STDERR "-?????? (convert -resize 60x60 \"$ENV{HOME}/tkweather/$fciconid\" 
 
 	$mw->after($checkmsec, \&getweather);  #THIS SEEMS TO HAVE TO BE HERE TO REPEAT?!
 	&reconfigButton();
-print STDERR "-???- alert=$current->{alert}=\n"  if ($debug);
-	if ($current->{alert} =~ /warning/io)  #FLIP THE BUTTON THRU THE 3 FACES TO ALERT USER:
+	if ($current->{alert} =~ /warning/io)  #FLIP THE BUTTON THRU THE 4 FACES TO ALERT USER:
 	{
 		$mw->bell;  #RING THE BELL!
-print STDERR "-!!!- SHOULD FLIP IT!\n"  if ($debug);
-		++$btnState;
-		$btnState = 0  if ($btnState > 3);
-		sleep(1);
-		&reconfigButton();
-		++$btnState;
-		$btnState = 0  if ($btnState > 3);
-		sleep(1);
-		&reconfigButton();
-		++$btnState;
-		$btnState = 0  if ($btnState > 3);
-		sleep(1);
-		&reconfigButton();
+		for (my $i=0;$i<=3;$i++) {
+			++$btnState;
+			$btnState = 0  if ($btnState > 3);
+			sleep(1);
+			&reconfigButton();
+		}
 		`$alertcmd $current`  if ($alertcmd && $current->{alert} =~ /warning/io);
 	}
 	return 1;

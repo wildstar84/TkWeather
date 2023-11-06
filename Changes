@@ -48,7 +48,11 @@ v3.4:  * NOAA is now the only weather site supported, as during the intrim,
        scrape both an icon and the pertinent weather info text.
        * Numerous other updates, fixes & tweaks made internally.
        * "Misery Index" uses an improved formula & is scaled to 100 instead of 
-       150 to feel more like a real temperature.
+       150 to look/feel more like a real feirenheight temperature value.
        * geolocatezip.pl has not changed.
        * Also included my tkweather.cfg (zip-code changed for privacy) for a 
        working example.
+v3.41: * Fix failure to fully flash-cycle through the displays back to the 
+       current one when in weather-alert status.
+       * Change default re-fetch time from 1 to 3 minutes after a failure to 
+       retrieve html from the site.
