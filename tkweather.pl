@@ -126,7 +126,7 @@ use strict;
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (c) 2003-2023 Jim Turner.
+Copyright (c) 2003-2024 Jim Turner.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a
@@ -196,7 +196,7 @@ use Tk::JPEG;
 use LWP::Simple;
 use  Tk::Balloon;
 
-our $VERSION = '3.41';
+our $VERSION = '3.42';
 
 my $havetime2str = 0;
 eval { require 'Date/Time2fmtstr.pm'; $havetime2str = 1; };
@@ -474,6 +474,7 @@ print STDERR "s:get_weather() FAILED!\n"  unless ($silent && !$debug);
 		$mw->after($checkmsec_onerror, \&getweather);
 		return 0;
 	}
+	$mw->after($checkmsec, \&getweather);  #THIS SEEMS TO HAVE TO BE HERE TO REPEAT?!
 
 	my $iconid = '';
 	my $fciconid = '';
@@ -730,7 +731,6 @@ print STDERR "-?????? (convert -resize 60x60 \"$ENV{HOME}/tkweather/$fciconid\" 
 		}
 	}
 
-	$mw->after($checkmsec, \&getweather);  #THIS SEEMS TO HAVE TO BE HERE TO REPEAT?!
 	&reconfigButton();
 	if ($current->{alert} =~ /warning/io)  #FLIP THE BUTTON THRU THE 4 FACES TO ALERT USER:
 	{
