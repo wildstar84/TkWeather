@@ -56,3 +56,4 @@ v3.41: * Fix failure to fully flash-cycle through the displays back to the
        current one when in weather-alert status.
        * Change default re-fetch time from 1 to 3 minutes after a failure to 
        retrieve html from the site.
+v3.42: * Fix ignoring of cycle-time between weather updates (checkmsec).
