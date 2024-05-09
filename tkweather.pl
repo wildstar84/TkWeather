@@ -196,7 +196,7 @@ use Tk::JPEG;
 use LWP::Simple;
 use  Tk::Balloon;
 
-our $VERSION = '3.42';
+our $VERSION = '3.43';
 
 my $havetime2str = 0;
 eval { require 'Date/Time2fmtstr.pm'; $havetime2str = 1; };
@@ -890,6 +890,8 @@ print STDERR "-0: REDIRECTED TO URL=$weatherurl=\n"  if ($debug);
 		$c->{pic} = ($html =~ s#id\=\"current\_conditions\-summary\"\s+class\=\"[^\<]+?\<img\s+src\=\"([^\"]+)\"##) ? $1 : '';
 print STDERR "-1: pic=".$c->{pic}."=\n"  if ($debug);
 		$c->{pic2} = ($html =~ s#\<img\s+src\=\"([^\"]+)\"[^\>]+?class\=\"forecast\-icon\"\>##) ? $1 : '';
+		$c->{pic2} ||= ($html =~ s#\<img\s+class\=\"forecast\-icon\"\s+src\=\"([^\"]+)\"[^\>]+?\>##) ? $1 : '';
+		$c->{pic2} =~ s#DualImage\.php\?i\=([\w\d]+)[^\"]+$#https\:\/\/forecast\.weather\.gov\/newimages\/medium\/$1\.png#;
 print STDERR "-1: pic=".$c->{pic}."=\n"  if ($debug);
 		unless ($c->{pic})
 		{
@@ -1007,8 +1009,8 @@ print STDERR "--getSensorData FAIL: crit=$cpucrit= metric=$metric=\n"  if ($debu
 	return 0;
 }
 
-#JWT:I PUT THIS HERE TO DO STUFF THAT NEEDS CHECKING EVERY FEW MINUTES, BUT DON'T WANT TO HAVE TO CREATE
-#YET ANOTHER DAEMON TO DO!:
+#JWT:I PUT THIS HERE TO DO STUFF THAT NEEDS CHECKING EVERY FEW MINUTES,
+#BUT DON'T WANT TO HAVE TO CREATE YET ANOTHER DAEMON TO DO!:
 sub doSomeOtherStuffFirst {
 	#USER CAN ADD ANYTHING HE WANTS DONE WHENEVER TKWEATHER FETCHES WEATHER DATA:
 }

@@ -57,3 +57,6 @@ v3.41: * Fix failure to fully flash-cycle through the displays back to the
        * Change default re-fetch time from 1 to 3 minutes after a failure to 
        retrieve html from the site.
 v3.42: * Fix ignoring of cycle-time between weather updates (checkmsec).
+v3.43: * Fix 2nd icon (forcast) image not always working due to slight changes 
+       to NOAA's site.
+       * Regenerate POD docs using latest (v5.x) vsn. of pod2man.
