@@ -6,7 +6,7 @@ use strict;
 
 =head1 NAME
 
-	TkWeather, by (c) Jim Turner
+	TkWeather, by (c) 2003-2025 Jim Turner
 
 =head1 SYNOPSIS
 
@@ -126,7 +126,7 @@ use strict;
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (c) 2003-2024 Jim Turner.
+Copyright (c) 2003-2025 Jim Turner.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a
@@ -196,7 +196,7 @@ use Tk::JPEG;
 use LWP::Simple;
 use  Tk::Balloon;
 
-our $VERSION = '3.43';
+our $VERSION = '3.44';
 
 my $havetime2str = 0;
 eval { require 'Date/Time2fmtstr.pm'; $havetime2str = 1; };
@@ -731,10 +731,13 @@ print STDERR "-?????? (convert -resize 60x60 \"$ENV{HOME}/tkweather/$fciconid\" 
 		}
 	}
 
+#	$mw->after($checkmsec, \&getweather);  #THIS SEEMS TO HAVE TO BE HERE TO REPEAT?!
 	&reconfigButton();
+print STDERR "-???- alert=$current->{alert}=\n"  if ($debug);
 	if ($current->{alert} =~ /warning/io)  #FLIP THE BUTTON THRU THE 4 FACES TO ALERT USER:
 	{
 		$mw->bell;  #RING THE BELL!
+print STDERR "-!!!- SHOULD FLIP IT!\n"  if ($debug);
 		for (my $i=0;$i<=3;$i++) {
 			++$btnState;
 			$btnState = 0  if ($btnState > 3);
@@ -892,16 +895,17 @@ print STDERR "-1: pic=".$c->{pic}."=\n"  if ($debug);
 		$c->{pic2} = ($html =~ s#\<img\s+src\=\"([^\"]+)\"[^\>]+?class\=\"forecast\-icon\"\>##) ? $1 : '';
 		$c->{pic2} ||= ($html =~ s#\<img\s+class\=\"forecast\-icon\"\s+src\=\"([^\"]+)\"[^\>]+?\>##) ? $1 : '';
 		$c->{pic2} =~ s#DualImage\.php\?i\=([\w\d]+)[^\"]+$#https\:\/\/forecast\.weather\.gov\/newimages\/medium\/$1\.png#;
-print STDERR "-1: pic=".$c->{pic}."=\n"  if ($debug);
+print STDERR "-1: pic=".$c->{pic}."= pic2=".$c->{pic2}."=\n"  if ($debug);
 		unless ($c->{pic})
 		{
 			$c->{pic} = $1  if ($html =~ s#\<img src\=\"([^\"]+)\"\s+width\=\"\d+\"\s+height\=\"\d+\"\s+alt\=\"##);
 			$c->{pic} ||= $c->{pic2};
-print STDERR "-2: pic=".$c->{pic}."=\n"  if ($debug);
+print STDERR "-2: pic=".$c->{pic}."= pic2=".$c->{pic2}."\n"  if ($debug);
 		}
-		$c->{pic} = 'https://forecast.weather.gov/' . $c->{pic}  unless ($c->{pic} =~ m#^\/#o);
-		$c->{pic2} = 'https://forecast.weather.gov/' . $c->{pic2}  unless ($c->{pic2} =~ m#^\/#o);
-print STDERR "-3: pic=".$c->{pic}."=\n"  if ($debug);
+print STDERR "-3a: pic=".$c->{pic}."= pic2=".$c->{pic2}."\n"  if ($debug);
+		$c->{pic} = 'https://forecast.weather.gov/' . $c->{pic}  unless ($c->{pic} =~ m#^(?:\/|http)#o);
+		$c->{pic2} = 'https://forecast.weather.gov/' . $c->{pic2}  unless ($c->{pic2} =~ m#^(?:\/|http)#o);
+print STDERR "-3b: pic=".$c->{pic}."= pic2=".$c->{pic2}."\n"  if ($debug);
 		if ($html =~ m!myforecast\-current\-lrg\"\>(.+?)\&deg\;F\<!o)
 		{
 			$c->{temp} = $1;

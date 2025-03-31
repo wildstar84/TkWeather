@@ -60,3 +60,7 @@ v3.42: * Fix ignoring of cycle-time between weather updates (checkmsec).
 v3.43: * Fix 2nd icon (forcast) image not always working due to slight changes 
        to NOAA's site.
        * Regenerate POD docs using latest (v5.x) vsn. of pod2man.
+v3.44: * Do not append http://forcast.weather.gov/ which begin with "http..."!
+       (fixes some broken image icons, as it seems that some of their images 
+       now link to full URLs.
+       * Update copyright year to include 2025.
